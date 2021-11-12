@@ -1,0 +1,16 @@
+#! /usr/bin/perl
+
+# Written by Deji Adegbite
+# This is a very simple script written to experiment with daemons in Perl. The
+# only thing this script does is to execute a script  in a target folder 
+use v5.26;
+use IO::Socket;
+use Getopt::Long;
+
+# Define some defaults.
+my $iroh_path = '/var/run/iroh/';                 # This is the folder where the socket and pid files live
+my $config_file = '/etc/iroh/config';             # Name and location of the file to use for configuration
+my $target_folder = '$HOME';                      # The folder to search for file to execute.
+
+
+my $sock = IO::Socket::UNIX->new();
