@@ -12,5 +12,14 @@ my $iroh_path = '/var/run/iroh/';                 # This is the folder where the
 my $config_file = '/etc/iroh/config';             # Name and location of the file to use for configuration
 my $target_folder = '$HOME';                      # The folder to search for file to execute.
 
-say for(@ARGV);
+# Get the sub command sent to iroh.
+my $subcommand = $ARGV[0];
+if($subcommand eq 'help') {
+    showhelp()
+}
+
 my $sock = IO::Socket::UNIX->new();
+
+sub showhelp {
+    say 'help'
+}
