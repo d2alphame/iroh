@@ -12,13 +12,30 @@ my $iroh_path = '/var/run/iroh/';                 # This is the folder where the
 my $config_file = '/etc/iroh/config';             # Name and location of the file to use for configuration
 my $target_folder = '$HOME';                      # The folder to search for file to execute.
 
-# Get the sub command sent to iroh.
-my $subcommand = $ARGV[0];
-if($subcommand eq 'help') {
+# Handle the special cases for getting help
+
+if(scalar @ARGV == 0) { showhelp() }            # Invoking iroh without any subcommands should show help
+
+# Invokin iroh with 'help' as the subcommand or any of the following options
+# should show the help system
+my $subcommand = shift @ARGV;
+if(
+    $subcommand eq 'help'       ||
+    $subcommand eq '-h'         ||
+    $subcommand eq '--h'        ||
+    $subcommand eq '-help'      ||
+    $subcommand eq '--help'     ||
+    $subcommand eq '?'          ||
+    $subcommand eq '-?'         ||
+    $subcommand eq '--?'
+)
+{
     showhelp()
 }
+else { unshift @ARGV, $subcommand }
 
-my $sock = IO::Socket::UNIX->new();
+
+#my $sock = IO::Socket::UNIX->new();
 
 sub showhelp {
     say 'help'
