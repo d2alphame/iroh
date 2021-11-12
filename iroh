@@ -12,5 +12,5 @@ my $iroh_path = '/var/run/iroh/';                 # This is the folder where the
 my $config_file = '/etc/iroh/config';             # Name and location of the file to use for configuration
 my $target_folder = '$HOME';                      # The folder to search for file to execute.
 
-
+say for(@ARGV);
 my $sock = IO::Socket::UNIX->new();
