@@ -2,15 +2,16 @@
 
 # Written by Deji Adegbite
 # This is a very simple script written to experiment with daemons in Perl. The
-# only thing this script does is to execute a script  in a target folder 
+# only thing this script does is to execute a script/file in a target folder 
 use v5.26;
 use IO::Socket;
 use Getopt::Long;
 
 # Define some defaults.
-my $iroh_path = '/var/run/iroh/';                 # This is the folder where the socket and pid files live
-my $config_file = '/etc/iroh/config';             # Name and location of the file to use for configuration
-my $target_folder = '$HOME';                      # The folder to search for file to execute.
+my $iroh_path = '/var/run/iroh/';               # This is the folder where the socket and pid files live
+my $config_file = '/etc/iroh/config';           # Name and location of the file to use for configuration
+my $target_folder = $ENV{'HOME'};               # The folder to search for file to execute
+my $file = 'iroh';                              # The name of the file or script to execute
 
 # Handle the special cases for getting help
 
@@ -32,10 +33,27 @@ if(
 {
     showhelp()
 }
-else { unshift @ARGV, $subcommand }
+elsif($subcommand eq 'start')   { start() }
+elsif($subcommand eq 'stop')    { stop() }
+elsif($subcommand eq 'restart') { restart() }
+else { say "$subcommand is an unrecognized iroh command"; exit 1 }
 
 
-#my $sock = IO::Socket::UNIX->new();
+sub start {
+    # Come here to start the daemon
+    # my $sock = IO::Socket::UNIX->new();
+    say 'start'
+}
+
+sub stop {
+    # Come here to stop the daemon
+    say 'stop'
+}
+
+sub restart {
+    # Come here to restart the daemon
+    say 'restart'
+}
 
 sub showhelp {
     say 'help'
