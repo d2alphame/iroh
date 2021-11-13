@@ -85,13 +85,24 @@ sub restart {
     say 'restart'
 }
 
+
 sub showhelp {
-    say 'help'
+print << 'EOF'
+Use `commands' to show the list of commands and what they do.
+`iroh <COMMAND> help' to get help for an iroh command. For
+example `iroh start help` to get help on the `start' command.
+See the iroh manual (`man iroh') for more details.
+EOF
 }
 
+
 sub commands {
-    # List all the commands
-    for(keys %valid_commands) {
+    
+    say 'help: To get help about iroh';             # First show the command to get help, then...
+
+    # ...list all the other commands
+    my @cmds = sort (keys %valid_commands);
+    for(@cmds) {
         say "$_: " . $valid_commands{$_}{'description'}
     }
 }
