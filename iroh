@@ -40,7 +40,6 @@ my %valid_commands = (
 
 
 
-
 # Handle the special cases for getting help
 
 if(scalar @ARGV == 0) { showhelp() }            # Invoking iroh without any subcommands should show help
