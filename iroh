@@ -13,6 +13,15 @@ my $config_file = '/etc/iroh/config';           # Name and location of the file 
 my $target_folder = $ENV{'HOME'};               # The folder to search for file to execute
 my $file = 'iroh';                              # The name of the file or script to execute
 
+# This is the hash table for the sub commands. Implement the subroutine then
+# then add the name of the command to this hash
+my %valid_commands = (
+    start       =>  \&start,
+    stop        =>  \&stop,
+    restart     =>  \&restart,
+    commands    =>  \&commands
+);
+
 # Handle the special cases for getting help
 
 if(scalar @ARGV == 0) { showhelp() }            # Invoking iroh without any subcommands should show help
@@ -31,13 +40,14 @@ if(
     $subcommand eq '--?'
 )
 {
-    showhelp()
+    showhelp();
+    exit 0
 }
-elsif($subcommand eq 'start')   { start() }
-elsif($subcommand eq 'stop')    { stop() }
-elsif($subcommand eq 'restart') { restart() }
-else { say "$subcommand is an unrecognized iroh command"; exit 1 }
 
+# For unrecognized commands, show the error message and exit
+unless($valid_commands{$subcommand}) { say "The command $subcommand is not recognized by iroh"; exit 1 }
+
+$valid_commands{$subcommand} -> ();                             # Execute the sub command
 
 sub start {
     # Come here to start the daemon
@@ -58,4 +68,9 @@ sub restart {
 
 sub showhelp {
     say 'help'
+}
+
+sub commands {
+    # List all the commands
+    say for(keys %valid_commands);
 }
