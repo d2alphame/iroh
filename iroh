@@ -71,8 +71,24 @@ $valid_commands{$subcommand}{'action'} -> ();                             # Exec
 sub start {
     # Come here to start the daemon
     # my $sock = IO::Socket::UNIX->new();
-    say 'start'
-    
+    say 'start';
+
+    my $subsubcommand = shift @ARGV;            # Get the sub-sub-command. We need to know if the user is asking for help
+    if(     $subsubcommand eq 'help'    ||
+            $subsubcommand eq '-help'   ||
+            $subsubcommand eq '--help'  ||
+            $subsubcommand eq '-h'      ||
+            $subsubcommand eq '--h'     ||
+            $subsubcommand eq '?'       ||
+            $subsubcommand eq '-?'      ||
+            $subsubcommand eq '--?'     )
+    {
+        say q<start: Starts the iroh daemon>;
+        exit 0;
+    }
+    else{
+
+    }
 }
 
 sub stop {
