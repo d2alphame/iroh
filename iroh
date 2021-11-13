@@ -13,14 +13,33 @@ my $config_file = '/etc/iroh/config';           # Name and location of the file 
 my $target_folder = $ENV{'HOME'};               # The folder to search for file to execute
 my $file = 'iroh';                              # The name of the file or script to execute
 
-# This is the hash table for the sub commands. Implement the subroutine then
-# then add the name of the command to this hash
+# List of valid commands for iroh. When there's a new command, write a
+# subroutine to handle it and add it to this hash
 my %valid_commands = (
-    start       =>  \&start,
-    stop        =>  \&stop,
-    restart     =>  \&restart,
-    commands    =>  \&commands
+    start => {
+        description => 'Starts the iroh daemon',
+        action => \&start
+    },
+
+    stop => {
+        description => 'Stops the iroh daemon',
+        action => \&stop
+    },
+
+    restart => {
+        description => 'Restarts the iroh daemon',
+        action => \&restart
+    },
+
+    commands => {
+        description => 'Shows a list of iroh commands',
+        action => \&commands
+    }
+
 );
+
+
+
 
 # Handle the special cases for getting help
 
@@ -48,7 +67,7 @@ if(
 # For unrecognized commands, show the error message and exit
 unless($valid_commands{$subcommand}) { say "The command $subcommand is not recognized by iroh"; exit 1 }
 
-$valid_commands{$subcommand} -> ();                             # Execute the sub command
+$valid_commands{$subcommand}{'action'} -> ();                             # Execute the sub command
 
 sub start {
     # Come here to start the daemon
@@ -73,7 +92,9 @@ sub showhelp {
 
 sub commands {
     # List all the commands
-    say for(keys %valid_commands);
+    for(keys %valid_commands) {
+        say "$_: " . $valid_commands{$_}{'description'}
+    }
 }
 
 
