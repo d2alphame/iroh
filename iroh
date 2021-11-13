@@ -40,6 +40,7 @@ if(
     $subcommand eq '--?'
 )
 {
+    # Show the help messages and exit
     showhelp();
     exit 0
 }
@@ -74,3 +75,6 @@ sub commands {
     # List all the commands
     say for(keys %valid_commands);
 }
+
+
+__DATA__
