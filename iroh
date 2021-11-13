@@ -68,10 +68,9 @@ unless($valid_commands{$subcommand}) { say "The command $subcommand is not recog
 
 $valid_commands{$subcommand}{'action'} -> ();                             # Execute the sub command
 
+
 sub start {
-    # Come here to start the daemon
     # my $sock = IO::Socket::UNIX->new();
-    say 'start';
 
     my $subsubcommand = shift @ARGV;            # Get the sub-sub-command. We need to know if the user is asking for help
     if(     $subsubcommand eq 'help'    ||
@@ -86,8 +85,8 @@ sub start {
         say q<start: Starts the iroh daemon>;
         exit 0;
     }
-    else{
-
+    else {
+        # Process the command line arguements and do the process of starting the app
     }
 }
 
@@ -116,7 +115,7 @@ sub commands {
     
     say 'help: To get help about iroh';             # First show the command to get help, then...
 
-    # ...list all the other commands
+    # ...list all the other commands from the valid_commands hash in alphabetical order
     my @cmds = sort (keys %valid_commands);
     for(@cmds) {
         say "$_: " . $valid_commands{$_}{'description'}
