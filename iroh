@@ -103,9 +103,11 @@ sub restart {
 
 sub showhelp {
 print << 'EOF'
-Use `commands' to show the list of commands and what they do.
+To show the list of commands
+    iroh commands
 `iroh <COMMAND> help' to get help for an iroh command. For
-example `iroh start help` to get help on the `start' command.
+example to get help on the `start' command: 
+    iroh start help 
 See the iroh manual (`man iroh') for more details.
 EOF
 }
