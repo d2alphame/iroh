@@ -64,9 +64,15 @@ if(
 }
 
 # For unrecognized commands, show the error message and exit
-unless($valid_commands{$subcommand}) { say "The command $subcommand is not recognized by iroh"; exit 1 }
+unless($valid_commands{$subcommand}) { 
+    say "The command `$subcommand' is not recognized by iroh.";
+    say "To see the list of available commands:";
+    say "    iroh commands"; 
 
-$valid_commands{$subcommand}{'action'} -> ();                             # Execute the sub command
+    exit 1 
+}
+
+$valid_commands{$subcommand}{'action'} -> ();                             # Execute the subcommand
 
 
 sub start {
