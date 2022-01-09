@@ -7,6 +7,9 @@ use v5.26;
 use IO::Socket;
 use Getopt::Long;
 
+# Error codes:
+my $ERR_UNRECOGNIZED_COMMAND = 1;
+my $ERR_
 # Define some defaults.
 my $iroh_path = '/var/run/iroh/';               # This is the folder where the socket and pid files live
 my $config_file = '/etc/iroh/config';           # Name and location of the file to use for configuration
@@ -69,7 +72,7 @@ unless($valid_commands{$subcommand}) {
     say "To see the list of available commands:";
     say "    iroh commands"; 
 
-    exit 1 
+    exit $ERR_UNRECOGNIZED_COMMAND
 }
 
 $valid_commands{$subcommand}{'action'} -> ();                             # Execute the subcommand
@@ -77,17 +80,23 @@ $valid_commands{$subcommand}{'action'} -> ();                             # Exec
 
 sub start {
     # my $sock = IO::Socket::UNIX->new();
+    subhelp('start');
 
+    # Here we check if an instance of the daemon already exists
+    if(-S /var/run/iroh) {
+        say "An instance of iroh is already running";
+        exit 1;
+    }
 }
 
 sub stop {
     # Come here to stop the daemon
-    say 'stop'
+    subhelp('stop');
 }
 
 sub restart {
     # Come here to restart the daemon
-    say 'restart'
+    subhelp('restart');
 }
 
 
@@ -114,10 +123,12 @@ sub commands {
     }
 }
 
+
+# Sub command actions call this first to provide help to the users
 sub subhelp {
-    my subcmd = shift;
+    my $subcmd = shift;
     
-    my $subsubcommand = shift @ARGV;            # Get the sub-sub-command. We need to know if the user is asking for help
+    my $subsubcommand = shift @ARGV;
     if(     $subsubcommand eq 'help'    ||
             $subsubcommand eq '-help'   ||
             $subsubcommand eq '--help'  ||
@@ -127,11 +138,12 @@ sub subhelp {
             $subsubcommand eq '-?'      ||
             $subsubcommand eq '--?'     )
     {
-        say q<start: Starts the iroh daemon>;
+        say "$subcmd: " . $valid_commands{$subcmd}{'description'};
         exit 0;
     }
     else {
-        # Process the command line arguements and do the process of starting the app
+        # Put back whatever it was we removed from @ARGV
+        unshift @ARGV, $subsubcommand;
+        return
     }
 }
-__DATA__
