@@ -9,7 +9,10 @@ use Getopt::Long;
 
 # Error codes:
 my $ERR_UNRECOGNIZED_COMMAND = 1;
-my $ERR_
+my $ERR_UNRECOGNIZED_OPTION = 2;
+my $ERR_INVALID_OPTION_VALUE = 3;
+my $ERR_ALREADY_RUNNING = 4;
+
 # Define some defaults.
 my $iroh_path = '/var/run/iroh/';               # This is the folder where the socket and pid files live
 my $config_file = '/etc/iroh/config';           # Name and location of the file to use for configuration
@@ -41,10 +44,7 @@ my %valid_commands = (
 
 );
 
-
-
 # Handle the special cases for getting help
-
 if(scalar @ARGV == 0) { showhelp() }            # Invoking iroh without any subcommands should show help
 
 # Invoking iroh with 'help' as the subcommand or any of the following options
@@ -79,20 +79,27 @@ $valid_commands{$subcommand}{'action'} -> ();                             # Exec
 
 
 sub start {
-    # my $sock = IO::Socket::UNIX->new();
+
     subhelp('start');
 
-    # Here we check if an instance of the daemon already exists
-    if(-S /var/run/iroh) {
+    # Here we check if an instance of the daemon already exists by checcking for the socket file
+    # If the socket file exists, then an instance of iroh is already running
+    if(-S $iroh_path . "iroh.sock") {
         say "An instance of iroh is already running";
-        exit 1;
+        exit $ERR_ALREADY_RUNNING;
     }
+
+    # Create the socket
+    my $sock = IO::Socket::UNIX->new();
+
 }
+
 
 sub stop {
     # Come here to stop the daemon
     subhelp('stop');
 }
+
 
 sub restart {
     # Come here to restart the daemon
