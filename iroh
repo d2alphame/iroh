@@ -89,9 +89,11 @@ sub start {
         say "An instance of iroh is already running";
         exit $ERR_ALREADY_RUNNING;
     }
+    
+    # Get here if Iroh is not already running
 
-    # Create the socket
-    # my $sock = IO::Socket::UNIX->new();
+    # First thing is to create the socket file
+    my $socket = IO::Socket::UNIX->new();
 
 }
 
