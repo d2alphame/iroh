@@ -16,6 +16,7 @@ my $ERR_ALREADY_RUNNING = 4;
 # Define some defaults.
 my $iroh_path = '/var/run/iroh/';               # This is the folder where the socket and pid files live
 my $config_file = '/etc/iroh/config';           # Name and location of the file to use for configuration
+my $log_path = '/var/log/iroh/';                # The folder where logs should be kept
 my $target_folder = $ENV{'HOME'};               # The folder to search for file to execute
 my $file = 'iroh';                              # The name of the file or script to execute
 
@@ -90,7 +91,7 @@ sub start {
     }
 
     # Create the socket
-    my $sock = IO::Socket::UNIX->new();
+    # my $sock = IO::Socket::UNIX->new();
 
 }
 
