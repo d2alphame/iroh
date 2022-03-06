@@ -6,6 +6,7 @@
 use v5.26;
 use IO::Socket;
 use Getopt::Long;
+use POSIX;
 
 # Error codes:
 my $ERR_UNRECOGNIZED_COMMAND = 1;
@@ -92,8 +93,20 @@ sub start {
     
     # Get here if Iroh is not already running
 
+    # Create/start the daemon
+    my $pid = fork;
+    exit if $pid;
+    die "Couldn't fork: $!" unless defined($pid); 
+    POSIX::setsid()
+        or die "Can't start a new session: $!";
+    
+    # Don't forget to open the standard file handles to /dev/null
+    for my $handle (*STDIN, *STDOUT, *STDERR) {
+        open($handle, "+<", "/dev/null") || die "can't reopen $handle to /dev/null: $!"
+    }
+    
     # First thing is to create the socket file
-    my $socket = IO::Socket::UNIX->new();
+    # my $socket = IO::Socket::UNIX->new();
 
 }
 
