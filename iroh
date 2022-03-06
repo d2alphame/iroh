@@ -105,6 +105,13 @@ sub start {
         open($handle, "+<", "/dev/null") || die "can't reopen $handle to /dev/null: $!"
     }
     
+    # Ignore these signals
+    $SIG{TERM} = $SIG{HUP} = 'IGNORE';
+    open (my $logfile, '>', 'iroh.log');
+    while(1) {
+        say $logfile "Hello, I'm the dragon of the West";
+    }
+
     # First thing is to create the socket file
     # my $socket = IO::Socket::UNIX->new();
 
