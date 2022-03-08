@@ -95,7 +95,7 @@ sub start {
 
     # Create/start the daemon
     my $pid = fork;
-    exit if $pid;
+    if($pid) { say $pid; exit }
     die "Couldn't fork: $!" unless defined($pid); 
     POSIX::setsid()
         or die "Can't start a new session: $!";
@@ -110,6 +110,7 @@ sub start {
     open (my $logfile, '>', 'iroh.log');
     while(1) {
         say $logfile "Hello, I'm the dragon of the West";
+        sleep(30) ;
     }
 
     # First thing is to create the socket file
